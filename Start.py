@@ -45,8 +45,8 @@ def help_com(message):
 def keyboard_go():
     keyb_markup = telebot.types.ReplyKeyboardMarkup()
     button_genre = telebot.types.KeyboardButton('Жанры фильмов')
-    button_random_populer = telebot.types.KeyboardButton('Случайный сериал')
-    button_random_500 = telebot.types.KeyboardButton('Случайный фильм')
+    button_random_populer = telebot.types.KeyboardButton('Случайный популярный сериал')
+    button_random_500 = telebot.types.KeyboardButton('Случайный популярный фильм')
     keyb_markup.row(button_genre)
     keyb_markup.row(button_random_populer)
     keyb_markup.row(button_random_500)
@@ -79,9 +79,9 @@ def reg_name(message):
 def genre_reply(message):
     if message.text == 'Жанры фильмов':
         bot.send_message(message.chat.id, 'Выберите один из жанров: ', reply_markup=keyboard_genre())
-    if message.text == 'Случайный сериал':
+    if message.text == 'Случайный популярный сериал':
         pass
-    if message.text == 'Случайный фильм':
+    if message.text == 'Случайный популярный фильм':
         bot.send_message(message.chat.id, spisok_500())
 
 
