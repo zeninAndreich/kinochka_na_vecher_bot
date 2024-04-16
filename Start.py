@@ -97,4 +97,4 @@ def genre_reply_but(call):
         bot.send_message(call.message.chat.id, 'Вы выбрали Ужасы!')
 
 
-bot.polling()  # запускаем бота
+bot.polling()  # запускаем бота 1
