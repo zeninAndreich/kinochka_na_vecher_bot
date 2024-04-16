@@ -1,15 +1,13 @@
-import random
-
 import telebot
 from config import token
-from bs4 import BeautifulSoup as bs
-import requests
 from keybouards import Keybouards
 from Dly_films import populer_films
+from Dly_serials import populer_serials
 
 
 bot = telebot.TeleBot(token)
 name = ''
+
 
 @bot.message_handler(commands=['start'])
 def start_com(message):
@@ -17,6 +15,7 @@ def start_com(message):
     bot.send_message(message.chat.id, privetcvie)
     bot.register_next_step_handler(message,
                                    reg_name)  # прописываем,что нужно вызвать функцию сразу после сообщения "как тебя зовут"
+
 
 @bot.message_handler(commands=['help'])
 def help_com(message):
@@ -44,7 +43,7 @@ def genre_reply(message):
     if message.text == 'Жанры фильмов':
         bot.send_message(message.chat.id, 'Выберите один из жанров: ', reply_markup=Keybouards.keyboard_genre(Keybouards))
     if message.text == 'Случайный популярный сериал':
-        pass
+        bot.send_message(message.chat.id, populer_serials.spisok_best_serials(populer_serials))
     if message.text == 'Случайный популярный фильм':
         bot.send_message(message.chat.id, populer_films.spisok_best_films(populer_films))
 
