@@ -4,6 +4,8 @@ import telebot
 from config import token
 from bs4 import BeautifulSoup as bs
 import requests
+from keybouards import Keybouards
+
 
 bot = telebot.TeleBot(token)
 name = ''
@@ -11,7 +13,7 @@ name = ''
 spisok_films = []
 
 
-def spisok_500():
+def spisok_best_films():
     global spisok_films
     if len(spisok_films) == 0:
         for i in range(1, 2):
@@ -42,30 +44,15 @@ def help_com(message):
     bot.send_message(message.chat.id, help_text)
 
 
-def keyboard_go():
-    keyb_markup = telebot.types.ReplyKeyboardMarkup()
-    button_genre = telebot.types.KeyboardButton('Жанры фильмов')
-    button_random_populer = telebot.types.KeyboardButton('Случайный популярный сериал')
-    button_random_500 = telebot.types.KeyboardButton('Случайный популярный фильм')
-    keyb_markup.row(button_genre)
-    keyb_markup.row(button_random_populer)
-    keyb_markup.row(button_random_500)
-    return keyb_markup
 
 
-def keyboard_genre():
-    keyb_gener_reply = telebot.types.InlineKeyboardMarkup()
-    key_comedy = telebot.types.InlineKeyboardButton(text='Комедии', callback_data='comedy')
-    key_mult = telebot.types.InlineKeyboardButton(text='Мультфильмы', callback_data='mult')
-    key_fantasy = telebot.types.InlineKeyboardButton(text='Фентази', callback_data='fantasy')
-    key_horror = telebot.types.InlineKeyboardButton(text='Ужасы', callback_data='horror')
-    keyb_gener_reply.add(key_comedy, key_mult, key_fantasy, key_horror)
-    return keyb_gener_reply
+
+
 
 
 @bot.message_handler(commands=['go'])
 def go_com(message):
-    bot.send_message(message.chat.id, 'Поехали', reply_markup=keyboard_go())
+    bot.send_message(message.chat.id, 'Поехали', reply_markup=Keybouards.keyboard_go(Keybouards))
 
 
 def reg_name(message):
@@ -78,11 +65,11 @@ def reg_name(message):
 @bot.message_handler(content_types=['text'])
 def genre_reply(message):
     if message.text == 'Жанры фильмов':
-        bot.send_message(message.chat.id, 'Выберите один из жанров: ', reply_markup=keyboard_genre())
+        bot.send_message(message.chat.id, 'Выберите один из жанров: ', reply_markup=Keybouards.keyboard_genre(Keybouards))
     if message.text == 'Случайный популярный сериал':
         pass
     if message.text == 'Случайный популярный фильм':
-        bot.send_message(message.chat.id, spisok_500())
+        bot.send_message(message.chat.id, spisok_best_films())
 
 
 @bot.callback_query_handler(func=lambda call: True)
