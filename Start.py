@@ -5,27 +5,11 @@ from config import token
 from bs4 import BeautifulSoup as bs
 import requests
 from keybouards import Keybouards
+from Dly_films import populer_films
 
 
 bot = telebot.TeleBot(token)
 name = ''
-
-spisok_films = []
-
-
-def spisok_best_films():
-    global spisok_films
-    if len(spisok_films) == 0:
-        for i in range(1, 2):
-            response_get = requests.get(f'https://w140.zona.plus/movies?page={i}')
-            soup = bs(response_get.text, features='html.parser')
-            quotes_films = soup.find_all('div', class_='results-item-title')
-            for film in quotes_films:
-                spisok_films.append(film.text)
-        return random.choice(spisok_films)
-    else:
-        return random.choice(spisok_films)
-
 
 @bot.message_handler(commands=['start'])
 def start_com(message):
@@ -34,7 +18,6 @@ def start_com(message):
     bot.register_next_step_handler(message,
                                    reg_name)  # прописываем,что нужно вызвать функцию сразу после сообщения "как тебя зовут"
 
-
 @bot.message_handler(commands=['help'])
 def help_com(message):
     help_text = """ 
@@ -42,12 +25,6 @@ def help_com(message):
     \n"При работе с ботом используйте клавиатуру, которая появится после отправки команды /go"
     """
     bot.send_message(message.chat.id, help_text)
-
-
-
-
-
-
 
 
 @bot.message_handler(commands=['go'])
@@ -69,7 +46,7 @@ def genre_reply(message):
     if message.text == 'Случайный популярный сериал':
         pass
     if message.text == 'Случайный популярный фильм':
-        bot.send_message(message.chat.id, spisok_best_films())
+        bot.send_message(message.chat.id, populer_films.spisok_best_films(populer_films))
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -84,4 +61,4 @@ def genre_reply_but(call):
         bot.send_message(call.message.chat.id, 'Вы выбрали Ужасы!')
 
 
-bot.polling()  # запускаем бота 1
+bot.polling()  # запускаем бота
